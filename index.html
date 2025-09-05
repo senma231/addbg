@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>广告展示页面</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        
+        .container {
+            background-color: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        
+        .ad-container {
+            margin: 20px 0;
+            display: inline-block;
+        }
+
+        /* 桌面版广告 - 默认显示 */
+        .ad-desktop {
+            display: block;
+        }
+
+        /* 移动版广告 - 默认隐藏 */
+        .ad-mobile {
+            display: none;
+        }
+
+        /* 移动端媒体查询 - 屏幕宽度小于768px时 */
+        @media (max-width: 767px) {
+            .ad-desktop {
+                display: none;
+            }
+
+            .ad-mobile {
+                display: block;
+            }
+
+            .container {
+                padding: 20px;
+                margin: 10px;
+            }
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 24px;
+        }
+        
+        .footer {
+            margin-top: 30px;
+            color: #666;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>广告展示</h1>
+        
+        <div class="ad-container">
+            <!-- 桌面版广告 -->
+            <div class="ad-desktop">
+                <div id="webtraf_16929_desktop" style="width:468px;height:60px;">
+                    <script src="https://webtrafic.ru/ads.php?uid=16929" async></script>
+                </div>
+            </div>
+
+            <!-- 移动版广告 -->
+            <div class="ad-mobile">
+                <div id="webtraf_16929_mobile" style="width:100%;max-width:468px;height:60px;">
+                    <script src="https://webtrafic.ru/ads.php?uid=16929" async></script>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>简易广告展示页面</p>
+            <p class="device-info">
+                <span class="ad-desktop">桌面版广告</span>
+                <span class="ad-mobile">移动版广告</span>
+            </p>
+        </div>
+    </div>
+</body>
+</html>
