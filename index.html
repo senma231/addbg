@@ -278,76 +278,32 @@
     <script>
         // 检测设备类型并加载相应的广告
         function loadAd() {
-            const isMobile = window.innerWidth < 768;
+            const adContainer = document.getElementById('ad-content');
             const deviceInfo = document.getElementById('device-info');
+            const isMobile = window.innerWidth < 768;
 
-            // 广告容器配置
-            const adContainers = [
-                { id: 'ad-content-top', type: 'webtraf' },
-                { id: 'ad-content-middle', type: 'webtraf' },
-                { id: 'ad-content', type: 'webtraf' },
-                { id: 'ad-content-bottom', type: 'webtraf' }
-            ];
+            if (isMobile) {
+                // 移动版广告
+                adContainer.innerHTML = '<div id="webtraf_16929" style="width:100%;max-width:468px;height:60px;"><script src="https://webtrafic.ru/ads.php?uid=16929" async><\/script></div>';
+                deviceInfo.textContent = '移动版广告';
+            } else {
+                // 桌面版广告
+                adContainer.innerHTML = '<div id="webtraf_16929" style="width:468px;height:60px;"><script src="https://webtrafic.ru/ads.php?uid=16929" async><\/script></div>';
+                deviceInfo.textContent = '桌面版广告';
+            }
 
-            // 为每个广告位加载广告
-            adContainers.forEach((container, index) => {
-                const adContainer = document.getElementById(container.id);
-                if (adContainer) {
-                    // 清空容器
-                    adContainer.innerHTML = '';
-
-                    // 创建广告div
-                    const adDiv = document.createElement('div');
-                    adDiv.id = `webtraf_16929_${index}`;
-
-                    if (isMobile) {
-                        adDiv.style.cssText = 'width:100%;max-width:468px;height:60px;';
-                    } else {
-                        adDiv.style.cssText = 'width:468px;height:60px;';
-                    }
-
-                    // 创建并添加脚本
-                    const script = document.createElement('script');
-                    script.src = 'https://webtrafic.ru/ads.php?uid=16929';
-                    script.async = true;
-
-                    // 添加到DOM
-                    adContainer.appendChild(adDiv);
-                    adDiv.appendChild(script);
-                }
-            });
-
-            // 更新设备信息
-            if (deviceInfo) {
-                deviceInfo.textContent = isMobile ? '移动版广告' : '桌面版广告';
+            // 重新执行脚本
+            const scripts = adContainer.getElementsByTagName('script');
+            for (let i = 0; i < scripts.length; i++) {
+                const script = document.createElement('script');
+                script.src = scripts[i].src;
+                script.async = true;
+                document.head.appendChild(script);
             }
         }
 
-        // 加载PopCash广告
-        function loadPopCash() {
-            var uid = '494658';
-            var wid = '745470';
-            var pop_tag = document.createElement('script');
-            pop_tag.src = '//cdn.popcash.net/show.js';
-            document.body.appendChild(pop_tag);
-            pop_tag.onerror = function() {
-                pop_tag = document.createElement('script');
-                pop_tag.src = '//cdn2.popcash.net/show.js';
-                document.body.appendChild(pop_tag);
-            };
-        }
-
         // 页面加载时执行
-        document.addEventListener('DOMContentLoaded', function() {
-            // 加载WebTraf广告
-            loadAd();
-
-            // 延迟加载PopCash广告，确保页面完全加载
-            setTimeout(function() {
-                loadPopCash();
-                console.log('PopCash 广告联盟已加载');
-            }, 1000);
-        });
+        document.addEventListener('DOMContentLoaded', loadAd);
 
         // 窗口大小改变时重新加载广告
         window.addEventListener('resize', function() {
@@ -356,10 +312,13 @@
         });
     </script>
 
-    <!-- PopCash 广告联盟备用代码 -->
+    <!-- PopCash 弹出式广告代码 - 原始代码不修改 -->
     <script type="text/javascript">
        var uid = '494658';
        var wid = '745470';
+       var pop_fback = 'up';
+       var pop_tag = document.createElement('script');pop_tag.src='//cdn.popcash.net/show.js';document.body.appendChild(pop_tag);
+       pop_tag.onerror = function() {pop_tag = document.createElement('script');pop_tag.src='//cdn2.popcash.net/show.js';document.body.appendChild(pop_tag)};
     </script>
 </body>
 </html>
