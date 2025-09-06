@@ -312,63 +312,12 @@
         });
     </script>
 
-    <!-- PopCash 广告代码 -->
+    <!-- PopCash 标准广告代码 - 按照官方文档要求 -->
     <script type="text/javascript">
-        // PopCash 弹出式广告 - 用户交互触发
-        function loadPopCashPopup() {
-            console.log('Loading PopCash popup ad...');
-            var uid = '494658';
-            var wid = '745470';
-            var pop_fback = 'up';
-            var pop_tag = document.createElement('script');
-            pop_tag.src='//cdn.popcash.net/show.js';
-            pop_tag.onload = function() { console.log('PopCash popup script loaded successfully'); };
-            pop_tag.onerror = function() {
-                console.log('PopCash primary CDN failed, trying backup...');
-                pop_tag = document.createElement('script');
-                pop_tag.src='//cdn2.popcash.net/show.js';
-                pop_tag.onload = function() { console.log('PopCash backup script loaded successfully'); };
-                pop_tag.onerror = function() { console.log('PopCash backup CDN also failed'); };
-                document.body.appendChild(pop_tag);
-            };
-            document.body.appendChild(pop_tag);
-        }
-
-        // PopCash 标准广告 - 立即加载
-        function loadPopCashStandard() {
-            console.log('Loading PopCash standard ad...');
-            var uid = '494658';
-            var wid = '745470';
-            var pop_tag = document.createElement('script');
-            pop_tag.src='//cdn.popcash.net/show.js';
-            pop_tag.onload = function() { console.log('PopCash standard script loaded successfully'); };
-            pop_tag.onerror = function() {
-                console.log('PopCash standard primary CDN failed, trying backup...');
-                pop_tag = document.createElement('script');
-                pop_tag.src='//cdn2.popcash.net/show.js';
-                pop_tag.onload = function() { console.log('PopCash standard backup script loaded successfully'); };
-                pop_tag.onerror = function() { console.log('PopCash standard backup CDN also failed'); };
-                document.body.appendChild(pop_tag);
-            };
-            document.body.appendChild(pop_tag);
-        }
-
-        // 页面加载完成后执行
-        document.addEventListener('DOMContentLoaded', function() {
-            // 立即加载标准广告
-            setTimeout(loadPopCashStandard, 1000);
-
-            // 为页面添加点击事件来触发弹出式广告
-            let popupTriggered = false;
-            document.addEventListener('click', function() {
-                if (!popupTriggered) {
-                    loadPopCashPopup();
-                    popupTriggered = true;
-                }
-            });
-
-            console.log('PopCash ads initialized. Click anywhere to trigger popup ad.');
-        });
+       var uid = '494658';
+       var wid = '745470';
+       var pop_tag = document.createElement('script');pop_tag.src='//cdn.popcash.net/show.js';document.body.appendChild(pop_tag);
+       pop_tag.onerror = function() {pop_tag = document.createElement('script');pop_tag.src='//cdn2.popcash.net/show.js';document.body.appendChild(pop_tag)};
     </script>
 </body>
 </html>
