@@ -39,14 +39,6 @@
     }
     </script>
 
-    <!-- PopCash 广告联盟代码 -->
-    <script type="text/javascript">
-       var uid = '494658';
-       var wid = '745470';
-       var pop_tag = document.createElement('script');pop_tag.src='//cdn.popcash.net/show.js';document.body.appendChild(pop_tag);
-       pop_tag.onerror = function() {pop_tag = document.createElement('script');pop_tag.src='//cdn2.popcash.net/show.js';document.body.appendChild(pop_tag)};
-    </script>
-
     <style>
         * {
             margin: 0;
@@ -301,24 +293,27 @@
             adContainers.forEach((container, index) => {
                 const adContainer = document.getElementById(container.id);
                 if (adContainer) {
-                    if (container.type === 'webtraf') {
-                        if (isMobile) {
-                            // 移动版广告
-                            adContainer.innerHTML = `<div id="webtraf_16929_${index}" style="width:100%;max-width:468px;height:60px;"><script src="https://webtrafic.ru/ads.php?uid=16929" async><\/script></div>`;
-                        } else {
-                            // 桌面版广告
-                            adContainer.innerHTML = `<div id="webtraf_16929_${index}" style="width:468px;height:60px;"><script src="https://webtrafic.ru/ads.php?uid=16929" async><\/script></div>`;
-                        }
+                    // 清空容器
+                    adContainer.innerHTML = '';
 
-                        // 重新执行脚本
-                        const scripts = adContainer.getElementsByTagName('script');
-                        for (let i = 0; i < scripts.length; i++) {
-                            const script = document.createElement('script');
-                            script.src = scripts[i].src;
-                            script.async = true;
-                            document.head.appendChild(script);
-                        }
+                    // 创建广告div
+                    const adDiv = document.createElement('div');
+                    adDiv.id = `webtraf_16929_${index}`;
+
+                    if (isMobile) {
+                        adDiv.style.cssText = 'width:100%;max-width:468px;height:60px;';
+                    } else {
+                        adDiv.style.cssText = 'width:468px;height:60px;';
                     }
+
+                    // 创建并添加脚本
+                    const script = document.createElement('script');
+                    script.src = 'https://webtrafic.ru/ads.php?uid=16929';
+                    script.async = true;
+
+                    // 添加到DOM
+                    adContainer.appendChild(adDiv);
+                    adDiv.appendChild(script);
                 }
             });
 
@@ -328,12 +323,30 @@
             }
         }
 
+        // 加载PopCash广告
+        function loadPopCash() {
+            var uid = '494658';
+            var wid = '745470';
+            var pop_tag = document.createElement('script');
+            pop_tag.src = '//cdn.popcash.net/show.js';
+            document.body.appendChild(pop_tag);
+            pop_tag.onerror = function() {
+                pop_tag = document.createElement('script');
+                pop_tag.src = '//cdn2.popcash.net/show.js';
+                document.body.appendChild(pop_tag);
+            };
+        }
+
         // 页面加载时执行
         document.addEventListener('DOMContentLoaded', function() {
+            // 加载WebTraf广告
             loadAd();
 
-            // PopCash 广告已经在 head 中加载
-            console.log('PopCash 广告联盟已加载');
+            // 延迟加载PopCash广告，确保页面完全加载
+            setTimeout(function() {
+                loadPopCash();
+                console.log('PopCash 广告联盟已加载');
+            }, 1000);
         });
 
         // 窗口大小改变时重新加载广告
@@ -341,6 +354,12 @@
             clearTimeout(window.resizeTimer);
             window.resizeTimer = setTimeout(loadAd, 250);
         });
+    </script>
+
+    <!-- PopCash 广告联盟备用代码 -->
+    <script type="text/javascript">
+       var uid = '494658';
+       var wid = '745470';
     </script>
 </body>
 </html>
