@@ -1,3 +1,6 @@
+import AdComponent from '@/components/AdComponent';
+import WebTraficAd from '@/components/WebTraficAd';
+
 export default function Home() {
   return (
     <div className="container">
@@ -61,18 +64,7 @@ export default function Home() {
       <section className="ad-section">
         <h3 className="ad-title">🎯 推荐服务</h3>
         <p>以下是我们精选的优质服务，助力您的项目成功</p>
-        <div style={{ marginTop: '20px' }}>
-          <div 
-            id="webtraf_16929" 
-            style={{
-              width: '468px',
-              height: '60px',
-              margin: '0 auto'
-            }}
-          >
-            <script src="https://webtrafic.ru/ads.php?uid=16929" async></script>
-          </div>
-        </div>
+        <WebTraficAd />
       </section>
       
       <footer className="footer">
