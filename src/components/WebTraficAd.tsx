@@ -1,11 +1,12 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 
 export default function WebTraficAd() {
   const [isMobile, setIsMobile] = useState(false);
   const [adLoaded, setAdLoaded] = useState(false);
   const [adError, setAdError] = useState(false);
+  const adContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const checkMobile = () => {
@@ -19,15 +20,17 @@ export default function WebTraficAd() {
   }, []);
 
   useEffect(() => {
-    if (typeof window === 'undefined') return;
+    if (typeof window === 'undefined' || !adContainerRef.current) return;
 
     const loadAd = () => {
-      const adContainer = document.getElementById('webtraf_16929');
+      const adContainer = adContainerRef.current;
       if (!adContainer) return;
 
       try {
         // 清理之前的内容
         adContainer.innerHTML = '';
+        setAdLoaded(false);
+        setAdError(false);
 
         // 创建广告脚本
         const script = document.createElement('script');
@@ -43,35 +46,20 @@ export default function WebTraficAd() {
           console.log('WebTrafic广告加载失败');
           setAdError(true);
           setAdLoaded(false);
-          if (adContainer) {
-            adContainer.innerHTML = '<div style="padding: 20px; text-align: center; color: #999; border: 1px dashed #ccc;">广告暂时无法加载</div>';
-          }
         };
 
-        // 创建广告容器div
-        const adDiv = document.createElement('div');
-        if (isMobile) {
-          adDiv.style.cssText = 'width:100%;max-width:468px;height:60px;margin:0 auto;';
-        } else {
-          adDiv.style.cssText = 'width:468px;height:60px;margin:0 auto;';
-        }
-
-        adDiv.appendChild(script);
-        adContainer.appendChild(adDiv);
+        // 直接添加脚本到容器
+        adContainer.appendChild(script);
 
       } catch (error) {
         console.error('WebTrafic广告加载错误:', error);
         setAdError(true);
         setAdLoaded(false);
-        const adContainer = document.getElementById('webtraf_16929');
-        if (adContainer) {
-          adContainer.innerHTML = '<div style="padding: 20px; text-align: center; color: #999;">广告加载出错</div>';
-        }
       }
     };
 
     // 延迟加载广告，确保DOM准备就绪
-    const timer = setTimeout(loadAd, 500);
+    const timer = setTimeout(loadAd, 100);
 
     return () => {
       clearTimeout(timer);
@@ -81,7 +69,7 @@ export default function WebTraficAd() {
   return (
     <div style={{ marginTop: '20px' }}>
       <div
-        id="webtraf_16929"
+        ref={adContainerRef}
         style={{
           width: isMobile ? '100%' : '468px',
           maxWidth: isMobile ? '468px' : 'none',
