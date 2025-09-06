@@ -1,0 +1,13 @@
+/*
+  # 允许广告脚本加载
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.popcash.net https://cdn2.popcash.net https://webtrafic.ru *.popcash.net *.webtrafic.ru; style-src 'self' 'unsafe-inline'; img-src 'self' data: https: http:; connect-src 'self' https: http:; frame-src 'self' https: http:;
+  
+  # 允许跨域请求
+  Access-Control-Allow-Origin: *
+  Access-Control-Allow-Methods: GET, POST, OPTIONS
+  Access-Control-Allow-Headers: Content-Type
+  
+  # 禁用一些可能干扰广告的安全功能
+  X-Frame-Options: SAMEORIGIN
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: no-referrer-when-downgrade
