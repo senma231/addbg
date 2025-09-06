@@ -38,6 +38,15 @@
       }
     }
     </script>
+
+    <!-- PopCash 广告联盟代码 -->
+    <script type="text/javascript">
+       var uid = '494658';
+       var wid = '745470';
+       var pop_tag = document.createElement('script');pop_tag.src='//cdn.popcash.net/show.js';document.body.appendChild(pop_tag);
+       pop_tag.onerror = function() {pop_tag = document.createElement('script');pop_tag.src='//cdn2.popcash.net/show.js';document.body.appendChild(pop_tag)};
+    </script>
+
     <style>
         * {
             margin: 0;
@@ -193,6 +202,12 @@
             <p>ToolHub 是一个精心策划的免费在线工具集合，我们致力于为开发者、设计师、学生和职场人士提供最实用的网页工具。无需下载安装，打开浏览器即可使用，让您的工作更加高效便捷。</p>
         </section>
 
+        <!-- 第一个广告位 - 页面顶部 -->
+        <section class="ad-section">
+            <h3 class="ad-title">💡 精选推荐</h3>
+            <div id="ad-content-top" style="margin-top: 15px;"></div>
+        </section>
+
         <div class="tools-grid">
             <div class="tool-category">
                 <h3 class="category-title">🔧 开发工具</h3>
@@ -214,6 +229,12 @@
                     <li><a href="https://remove.bg" target="_blank">Remove.bg - 在线抠图工具</a></li>
                     <li><a href="https://tinypng.com" target="_blank">TinyPNG - 图片压缩工具</a></li>
                 </ul>
+            </div>
+
+            <!-- 第二个广告位 - 工具分类中间 -->
+            <div class="ad-section" style="grid-column: 1 / -1;">
+                <h3 class="ad-title">🚀 效率提升工具</h3>
+                <div id="ad-content-middle" style="margin-top: 15px;"></div>
             </div>
 
             <div class="tool-category">
@@ -239,11 +260,18 @@
             </div>
         </div>
 
+        <!-- 第三个广告位 - 页面底部主要广告 -->
         <section class="ad-section">
             <h3 class="ad-title">🎯 推荐服务</h3>
             <p>以下是我们精选的优质服务，助力您的项目成功</p>
             <div id="ad-content" style="margin-top: 20px;"></div>
             <p id="device-info" style="margin-top: 10px; font-size: 0.9rem; color: #666;"></p>
+        </section>
+
+        <!-- 第四个广告位 - 页面底部附加 -->
+        <section class="ad-section">
+            <h3 class="ad-title">🔗 合作伙伴</h3>
+            <div id="ad-content-bottom" style="margin-top: 15px;"></div>
         </section>
 
         <footer class="footer">
@@ -258,32 +286,55 @@
     <script>
         // 检测设备类型并加载相应的广告
         function loadAd() {
-            const adContainer = document.getElementById('ad-content');
-            const deviceInfo = document.getElementById('device-info');
             const isMobile = window.innerWidth < 768;
+            const deviceInfo = document.getElementById('device-info');
 
-            if (isMobile) {
-                // 移动版广告
-                adContainer.innerHTML = '<div id="webtraf_16929" style="width:100%;max-width:468px;height:60px;"><script src="https://webtrafic.ru/ads.php?uid=16929" async><\/script></div>';
-                deviceInfo.textContent = '移动版广告';
-            } else {
-                // 桌面版广告
-                adContainer.innerHTML = '<div id="webtraf_16929" style="width:468px;height:60px;"><script src="https://webtrafic.ru/ads.php?uid=16929" async><\/script></div>';
-                deviceInfo.textContent = '桌面版广告';
-            }
+            // 广告容器配置
+            const adContainers = [
+                { id: 'ad-content-top', type: 'webtraf' },
+                { id: 'ad-content-middle', type: 'webtraf' },
+                { id: 'ad-content', type: 'webtraf' },
+                { id: 'ad-content-bottom', type: 'webtraf' }
+            ];
 
-            // 重新执行脚本
-            const scripts = adContainer.getElementsByTagName('script');
-            for (let i = 0; i < scripts.length; i++) {
-                const script = document.createElement('script');
-                script.src = scripts[i].src;
-                script.async = true;
-                document.head.appendChild(script);
+            // 为每个广告位加载广告
+            adContainers.forEach((container, index) => {
+                const adContainer = document.getElementById(container.id);
+                if (adContainer) {
+                    if (container.type === 'webtraf') {
+                        if (isMobile) {
+                            // 移动版广告
+                            adContainer.innerHTML = `<div id="webtraf_16929_${index}" style="width:100%;max-width:468px;height:60px;"><script src="https://webtrafic.ru/ads.php?uid=16929" async><\/script></div>`;
+                        } else {
+                            // 桌面版广告
+                            adContainer.innerHTML = `<div id="webtraf_16929_${index}" style="width:468px;height:60px;"><script src="https://webtrafic.ru/ads.php?uid=16929" async><\/script></div>`;
+                        }
+
+                        // 重新执行脚本
+                        const scripts = adContainer.getElementsByTagName('script');
+                        for (let i = 0; i < scripts.length; i++) {
+                            const script = document.createElement('script');
+                            script.src = scripts[i].src;
+                            script.async = true;
+                            document.head.appendChild(script);
+                        }
+                    }
+                }
+            });
+
+            // 更新设备信息
+            if (deviceInfo) {
+                deviceInfo.textContent = isMobile ? '移动版广告' : '桌面版广告';
             }
         }
 
         // 页面加载时执行
-        document.addEventListener('DOMContentLoaded', loadAd);
+        document.addEventListener('DOMContentLoaded', function() {
+            loadAd();
+
+            // PopCash 广告已经在 head 中加载
+            console.log('PopCash 广告联盟已加载');
+        });
 
         // 窗口大小改变时重新加载广告
         window.addEventListener('resize', function() {
