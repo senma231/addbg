@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 export default function WebTraficAd() {
   const [isMobile, setIsMobile] = useState(false);
   const [adLoaded, setAdLoaded] = useState(false);
+  const [adError, setAdError] = useState(false);
 
   useEffect(() => {
     const checkMobile = () => {
@@ -18,39 +19,59 @@ export default function WebTraficAd() {
   }, []);
 
   useEffect(() => {
-    // 清理之前的广告
-    const adContainer = document.getElementById('webtraf_16929');
-    if (adContainer) {
-      adContainer.innerHTML = '';
-    }
+    if (typeof window === 'undefined') return;
 
-    // 重新加载广告
     const loadAd = () => {
-      if (adContainer) {
-        // 根据设备类型创建不同的广告代码
+      const adContainer = document.getElementById('webtraf_16929');
+      if (!adContainer) return;
+
+      try {
+        // 清理之前的内容
+        adContainer.innerHTML = '';
+
+        // 创建广告脚本
+        const script = document.createElement('script');
+        script.src = 'https://webtrafic.ru/ads.php?uid=16929';
+        script.async = true;
+
+        script.onload = function() {
+          console.log('WebTrafic广告加载成功');
+          setAdLoaded(true);
+        };
+
+        script.onerror = function() {
+          console.log('WebTrafic广告加载失败');
+          setAdError(true);
+          setAdLoaded(false);
+          if (adContainer) {
+            adContainer.innerHTML = '<div style="padding: 20px; text-align: center; color: #999; border: 1px dashed #ccc;">广告暂时无法加载</div>';
+          }
+        };
+
+        // 创建广告容器div
+        const adDiv = document.createElement('div');
         if (isMobile) {
-          // 移动版广告代码
-          adContainer.innerHTML = '<div style="width:100%;max-width:468px;height:60px;"><script src="https://webtrafic.ru/ads.php?uid=16929" async><\/script></div>';
+          adDiv.style.cssText = 'width:100%;max-width:468px;height:60px;margin:0 auto;';
         } else {
-          // 桌面版广告代码
-          adContainer.innerHTML = '<div style="width:468px;height:60px;"><script src="https://webtrafic.ru/ads.php?uid=16929" async><\/script></div>';
+          adDiv.style.cssText = 'width:468px;height:60px;margin:0 auto;';
         }
 
-        // 重新执行脚本
-        const scripts = adContainer.getElementsByTagName('script');
-        for (let i = 0; i < scripts.length; i++) {
-          const script = document.createElement('script');
-          script.src = scripts[i].src;
-          script.async = true;
-          document.head.appendChild(script);
-        }
+        adDiv.appendChild(script);
+        adContainer.appendChild(adDiv);
 
-        setAdLoaded(true);
+      } catch (error) {
+        console.error('WebTrafic广告加载错误:', error);
+        setAdError(true);
+        setAdLoaded(false);
+        const adContainer = document.getElementById('webtraf_16929');
+        if (adContainer) {
+          adContainer.innerHTML = '<div style="padding: 20px; text-align: center; color: #999;">广告加载出错</div>';
+        }
       }
     };
 
     // 延迟加载广告，确保DOM准备就绪
-    const timer = setTimeout(loadAd, 100);
+    const timer = setTimeout(loadAd, 500);
 
     return () => {
       clearTimeout(timer);
@@ -73,10 +94,12 @@ export default function WebTraficAd() {
           border: adLoaded ? 'none' : '1px dashed #ccc'
         }}
       >
-        {!adLoaded && <span style={{ color: '#999', fontSize: '14px' }}>广告加载中...</span>}
+        {!adLoaded && !adError && <span style={{ color: '#999', fontSize: '14px' }}>广告加载中...</span>}
+        {adError && <span style={{ color: '#f56565', fontSize: '14px' }}>广告加载失败</span>}
       </div>
       <p style={{ marginTop: '10px', fontSize: '0.9rem', color: '#666' }}>
         {isMobile ? '移动版广告 (100%宽度，最大468px)' : '桌面版广告 (固定468px宽度)'}
+        {adError && ' - 网络连接问题'}
       </p>
     </div>
   );

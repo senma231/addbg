@@ -75,23 +75,7 @@ export default function Home() {
         </p>
       </footer>
       
-      {/* PopCash 广告代码 */}
-      <script
-        dangerouslySetInnerHTML={{
-          __html: `
-            var uid = '494658';
-            var wid = '745470';
-            var pop_tag = document.createElement('script');
-            pop_tag.src='//cdn.popcash.net/show.js';
-            document.body.appendChild(pop_tag);
-            pop_tag.onerror = function() {
-              pop_tag = document.createElement('script');
-              pop_tag.src='//cdn2.popcash.net/show.js';
-              document.body.appendChild(pop_tag);
-            };
-          `
-        }}
-      />
+      <AdComponent />
     </div>
   );
 }
