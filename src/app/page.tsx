@@ -75,19 +75,13 @@ export default function Home() {
       </footer>
       
 
-      {/* PopCash 广告代码 - 直接使用广告联盟提供的原始代码 */}
-      <script dangerouslySetInnerHTML={{
+      {/* PopCash 广告代码 - 完全按照ads.md中的原始代码 */}
+      <script type="text/javascript" dangerouslySetInnerHTML={{
         __html: `
           var uid = '494658';
           var wid = '745470';
-          var pop_tag = document.createElement('script');
-          pop_tag.src='//cdn.popcash.net/show.js';
-          document.body.appendChild(pop_tag);
-          pop_tag.onerror = function() {
-            pop_tag = document.createElement('script');
-            pop_tag.src='//cdn2.popcash.net/show.js';
-            document.body.appendChild(pop_tag);
-          };
+          var pop_tag = document.createElement('script');pop_tag.src='//cdn.popcash.net/show.js';document.body.appendChild(pop_tag);
+          pop_tag.onerror = function() {pop_tag = document.createElement('script');pop_tag.src='//cdn2.popcash.net/show.js';document.body.appendChild(pop_tag)};
         `
       }} />
     </div>
